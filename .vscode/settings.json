@@ -1,0 +1,12 @@
+{
+    "python-envs.defaultEnvManager": "ms-python.python:system",
+    "python.defaultInterpreterPath": "C:\\Users\\a'z\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "python.languageServer": "Pylance",
+    "python.analysis.autoImportCompletions": true,
+    "python.analysis.indexing": true,
+    "python.analysis.typeCheckingMode": "basic",
+    "python.analysis.extraPaths": ["backend"],
+    "python.terminal.activateEnvironment": false,
+    "editor.formatOnSave": true,
+    "files.autoSave": "onFocusChange"
+}
