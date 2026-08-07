@@ -1,0 +1,24 @@
+<!--pages/detail/detail.wxml-->
+<view class = "top" style="padding-top:10px">
+<view class = "title">小翼记账</view>
+<view class = "stats">
+  <picker mode="date" fields="month" value="{{year}}-{{month}}" bindchange="onDateChange">
+    <view class ="date1">
+      <text class ="year">{{year}}年</text>
+    </view>
+    <view class="date2">
+      <text class ="month">{{month}}月</text>
+      <view class="down" >▼</view>
+    </view>
+  </picker>
+  <view class="statItem" bindTap="goIncome">  
+    <text class ="stateLable">收入</text>
+    <text class ="stateValue">{{totleIncome}}</text>
+  </view>
+  <view class="statItem" bindTap="goOutcome">
+    <text class ="stateLable">支出</text>
+    <text class ="stateValue">{{totleOutcome}}</text>
+  </view>
+</view>
+</view>
+

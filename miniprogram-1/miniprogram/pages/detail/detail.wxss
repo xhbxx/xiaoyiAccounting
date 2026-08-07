@@ -1,0 +1,72 @@
+/* pages/detail/detail.wxss */
+.top
+{
+
+  height: 350rpx;
+  background:linear-gradient(to bottom,
+  #f4c313fa 0%,#f4c313fa 70%,rgba(255, 183, 77, 0) 100%);
+  box-sizing: content-box;
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+
+}
+
+.title
+{
+  margin-top: 40rpx;
+  font-size:50rpx;
+  color:#5d4139;
+  text-align:center;
+}
+
+.stats
+{
+  margin-top:20rpx;
+  display:flex;
+  justify-content: space-between;
+  align-items:baseline;
+  padding:0 30rpx;
+}
+.date2
+{
+  
+  display: flex;
+  flex-direction: row;
+  align-items:flex-end;
+}
+.year
+{
+  font-size:35rpx;
+  color:rgb(228, 222, 204);
+}
+.month
+{
+  margin-top:20rpx;
+  font-size:70rpx;
+}
+.down
+{
+
+  padding-left:30rpx;
+}
+
+.statItem
+{
+  padding:0 50rpx;
+  display:flex;
+  flex-direction: column;
+  align-items:flex-start;
+  gap: 50rpx;
+
+}
+
+.stateLable
+{
+  font-size:35rpx;
+  color:rgb(228, 222, 204);
+}
+.statevalue
+{
+  font-size:35rpx;
+}

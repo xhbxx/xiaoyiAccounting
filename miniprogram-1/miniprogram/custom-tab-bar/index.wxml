@@ -1,0 +1,22 @@
+<view class="tab-bar">
+  <view class="tab-item" bindtap="switchTab" data-index="0">
+      <image class="icon" src="/images/detail{{active==0?'_use':''}}.png"></image>
+      <text class="label">明细</text>
+  </view>
+<view class="tab-item" bindtap="switchTab" data-index="1">
+  <image class="icon" src="/images/chart{{active==1?'_use':''}}.png"></image>
+  <text class="label">图表</text>
+</view>
+<view class="tab-item-center" bindtap="switchTab" data-index="2">
+  <image class="icon-center" src="/images/bill{{active==2?'_use':''}}.png"></image>
+  <text class="label">记账</text>
+</view>
+<view class="tab-item" bindtap="switchTab" data-index="3">
+  <image class="icon" src="/images/discover{{active==3?'_use':''}}.png"></image>
+  <text class="label">发现</text>
+</view>
+<view class="tab-item" bindtap="switchTab" data-index="4">
+  <image class="icon" src="/images/profile{{active==4?'_use':''}}.png"></image>
+  <text class="label">我的</text>
+</view>
+</view>
