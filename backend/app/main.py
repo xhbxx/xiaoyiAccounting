@@ -1,7 +1,6 @@
 from fastapi import FastAPI
 
-app = FastAPI()
+from app.api.auth import router as auth_router
 
-@app.get("/{id}")
-def root(id:int):
-    return {"id":id}
+app = FastAPI()
+app.include_router(auth_router)
