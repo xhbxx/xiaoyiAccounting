@@ -49,3 +49,12 @@ class  HomeResponse(BaseModel):
     ledger: LedgerInfo
     period: PeriodInfo
     groups: list[BillGroup]
+
+class CategoriesItem(BaseModel):
+    id:int
+    name:str
+    icon:str
+
+class CategoriesResponse(BaseModel):
+    type:str
+    items:list[CategoriesItem]
