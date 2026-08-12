@@ -30,7 +30,10 @@ async def bills(
                 ,category=category          
                 ,remark=remark)
 
-    date = datetime.strptime(bill_date, "%Y-%m-%d")
+    try:
+        date = datetime.strptime(bill_date, "%Y-%m-%d")
+    except ValueError:
+        raise HTTPException(status_code=400, detail="账单日期格式必须为 YYYY-MM-DD")
 
     result=await db.execute(select(UserSetting).where(UserSetting.user_id==user.id))
     setting=result.scalar()
@@ -62,7 +65,10 @@ async def changeBill(
         db=Depends(get_db),
         user=Depends(get_current_user)
 ):
-    date = datetime.strptime(bill_date, "%Y-%m-%d")
+    try:
+        date = datetime.strptime(bill_date, "%Y-%m-%d")
+    except ValueError:
+        raise HTTPException(status_code=400, detail="账单日期格式必须为 YYYY-MM-DD")
     
     result=await db.execute(select(Bill).where(Bill.id==bill_id))
     bill=result.scalar_one_or_none()

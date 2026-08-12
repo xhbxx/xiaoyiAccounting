@@ -1,6 +1,7 @@
 Component({
   data: {
       active:0,
+      hidden:false,
       list:[
         "/pages/detail/detail",
         "/pages/chart/chart",

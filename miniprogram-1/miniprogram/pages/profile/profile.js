@@ -27,7 +27,7 @@ Page({
   onShow() {
     const tabBar = this.getTabBar && this.getTabBar();
     if (tabBar) {
-      tabBar.setData({ active: 4 });
+      tabBar.setData({ active: 4, hidden: false });
     }
   },
 

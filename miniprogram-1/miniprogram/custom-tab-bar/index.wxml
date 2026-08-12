@@ -1,4 +1,4 @@
-<view class="tab-bar">
+<view class="tab-bar" wx:if="{{!hidden}}">
   <view class="tab-item" bindtap="switchTab" data-index="0">
       <image class="icon" src="/images/detail{{active==0?'_use':''}}.png"></image>
       <text class="label">明细</text>

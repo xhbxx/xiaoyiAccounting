@@ -9,7 +9,6 @@
   display:flex;
   flex-direction: column;
   justify-content: center;
-
 }
 
 .title
@@ -50,7 +49,6 @@
 
   padding-left:30rpx;
 }
-
 .statItem
 {
   padding:0 50rpx;
@@ -69,4 +67,45 @@
 .statevalue
 {
   font-size:35rpx;
+}
+page {
+  background-color: #ffffff;
+}
+.date {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+}
+.dateD{
+  color:#6d6b6b
+  
+}
+.dateE{
+  margin-left: auto;
+  color:#6d6b6b
+}
+
+.billgroup {
+  flex-direction: column;
+  display: flex;
+}
+.line{
+  margin: 20rpx 30rpx 0;
+  border-bottom: 2rpx solid #ccc;
+
+}
+.bill{
+  display: flex;
+  align-items: center;
+  margin:10rpx;
+  gap:10rpx;
+}
+.billAmount{
+  margin-left:auto;
+}
+.icon{
+  height: 100rpx;
+  width:100rpx;
+  border-radius: 50%;       
+  background: #edececf7;
 }
