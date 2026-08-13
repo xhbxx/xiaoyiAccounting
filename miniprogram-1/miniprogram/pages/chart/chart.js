@@ -4,9 +4,22 @@ Page({
    * 页面的初始数据
    */
   data: {
+    choise:['支出','收入'],
+    choised:'支出',
+    activeIndex:3
+  },
+  onChange(e){
+    const index=e.detail.value
+    let a=0
+    if(index==0){ a = '支出'}
+    else{a = '收入' }
+    this.setData({
+      choised:a 
+    })
+  },
+  switchTime(e){
 
   },
-
   /**
    * 生命周期函数--监听页面加载
    */

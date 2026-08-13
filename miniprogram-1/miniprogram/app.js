@@ -1,5 +1,5 @@
 // app.js
-const { request } = require('./utils/api.js')
+const { request } = require('./utils/config.js')
 
 App({
   onLaunch: async function () {

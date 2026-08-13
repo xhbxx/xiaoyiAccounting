@@ -36,7 +36,8 @@
     </view>
     <view class="bill" wx:for="{{item.items}}">
       <image class="icon" src="/images/{{item.category}}.png"></image>
-      <view class="billText">{{item.category}}</view>
+      <view class="billText" wx:if="{{item.remark==''}}">{{item.category}}</view>
+      <view class="billText" wx:if="{{item.remark!=''}}">{{item.remark}}</view>
       <view class="billAmount">{{item.amount_text}}</view>
     </view>
     <view class="line"></view>

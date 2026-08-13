@@ -1,5 +1,5 @@
 // pages/bill/bill.js
-const { request } = require('../../utils/api.js')
+const { request } = require('../../utils/config.js')
 Page({
   /**
    * 页面的初始数据
@@ -125,6 +125,10 @@ Page({
     if (tabBar) {
       tabBar.setData({ active: 2, hidden: true });
     }
+    this.setData({billDateText:'今天',
+    amount:'',
+    date:'',})
+    
     this.loadCategories();
   },
   

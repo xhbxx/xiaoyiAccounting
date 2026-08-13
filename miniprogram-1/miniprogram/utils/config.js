@@ -1,4 +1,5 @@
 const BASE_URL = 'http://127.0.0.1:8000'
+const IMAGE_BASE_URL = 'https://azsworld.top/uploads'
 const token = wx.getStorageSync('token')
 
 function request(url, method = 'GET', data = {}) {
@@ -25,4 +26,4 @@ function request(url, method = 'GET', data = {}) {
         })
     })
 }
-module.exports = { request, BASE_URL }
+module.exports = { request, BASE_URL,IMAGE_BASE_URL}

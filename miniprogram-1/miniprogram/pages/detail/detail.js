@@ -1,5 +1,5 @@
 // pages/detail/detail.js
-const { request } = require('../../utils/api.js')
+const { request } = require('../../utils/config.js')
 
 Page({
   /**

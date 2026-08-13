@@ -1,2 +1,14 @@
 <!--pages/chart/chart.wxml-->
-<text>pages/chart/chart.wxml</text>
+<view class="top" style="padding-top:10px">
+  <picker mode="selector" range="{{choise}}" value="{{a}}" bindchange="onChange">
+    <view class="title" bindtap="choise">
+      <view class="titleText">{{choised}}</view>
+      <view class="down">▼</view>
+    </view>
+  </picker>
+  <view class="Time">
+  <view class="time {{activeIndex==0?'active':''}}" data-index="0" bindtap="switchTime">周</view>
+  <view class="time {{activeIndex==1?'active':''}}" data-index="1" bindtap="switchTime">月</view>
+  <view class="time {{activeIndex==2?'active':''}}" data-index="2" bindtap="switchTime">年</view>
+</view>
+</view>
