@@ -1,4 +1,5 @@
-from sqlalchemy import DECIMAL, Column, DateTime, ForeignKey, Integer, String, func
+from sqlalchemy import DECIMAL, Column, DateTime, ForeignKey, Integer, String, UniqueConstraint, func
+from sqlalchemy.dialects.mysql import INTEGER as MySQLInteger
 
 from app.db.database import Base
 
@@ -65,3 +66,15 @@ class UserSetting(Base):
     last_ledger_id = Column(Integer, ForeignKey("ledgers.id"))
     created_at = Column(DateTime, server_default=func.now())
     updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
+
+
+class MonthlyBudget(Base):
+    __tablename__ = 'monthly_budgets'
+    __table_args__ = (UniqueConstraint('ledger_id', 'year', 'month', name='uq_budget_period'),)
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    ledger_id = Column(Integer().with_variant(MySQLInteger(unsigned=True), 'mysql'),
+                       ForeignKey('ledgers.id'), nullable=False)
+    year = Column(Integer, nullable=False)
+    month = Column(Integer, nullable=False)
+    amount = Column(DECIMAL(12, 2), nullable=False)

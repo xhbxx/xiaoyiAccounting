@@ -1,0 +1,45 @@
+<view class="discover-header" style="padding-top: {{statusBarHeight}}px;">
+  <view class="discover-title">发现</view><view class="ledger-caption">{{ledgerName}}</view>
+</view>
+<view class="screen-body discover-body">
+  <view class="empty-state" wx:if="{{loading}}">正在加载本月数据…</view>
+  <view class="empty-state" wx:elif="{{loadError}}" bindtap="loadMonth">{{loadError}} · 点击重试</view>
+  <view class="section-card month-card" hidden="{{loading || loadError}}">
+    <view class="card-title" bindtap="openBills"><text>账单</text><text class="chevron">›</text></view>
+    <view class="monthly-summary">
+      <picker mode="date" fields="month" value="{{year}}-{{month}}" start="2000-01-01" end="2100-12-31" bindchange="onMonthChange"><view class="month-picker"><text class="month-number">{{month}}</text>月<text class="month-year">{{year}}年⌄</text></view></picker>
+      <view class="summary-stat"><text class="muted">收入</text><text>{{income}}</text></view>
+      <view class="summary-stat"><text class="muted">支出</text><text>{{expense}}</text></view>
+      <view class="summary-stat"><text class="muted">结余</text><text>{{balance}}</text></view>
+    </view>
+  </view>
+  <view class="section-card budget-card" style="visibility: {{loading || loadError ? 'hidden' : 'visible'}};">
+    <view class="card-title" bindtap="openBudget"><text>{{month}}月总预算</text><text class="chevron">›</text></view>
+    <view class="budget-content">
+      <view class="budget-ring" aria-label="{{budget ? '剩余预算' + remainingPercent + '%' : '尚未设置月预算'}}">
+        <view class="ring-half ring-right">
+          <view class="ring-segment" style="transform: rotate({{rightRotation}}deg);"></view>
+        </view>
+        <view class="ring-half ring-left">
+          <view class="ring-segment" style="transform: rotate({{leftRotation}}deg);"></view>
+        </view>
+        <view class="ring-center">
+          <block wx:if="{{budget}}"><text class="ring-label">剩余</text><text class="ring-percent">{{remainingPercent}}%</text></block>
+          <text wx:else class="ring-label">未设置</text>
+        </view>
+      </view>
+      <view class="budget-details" wx:if="{{budget}}">
+        <view class="budget-line remaining"><text>剩余预算</text><text>{{budget.remaining}}</text></view>
+        <view class="budget-line"><text>本月预算</text><text>{{budget.amount}}</text></view>
+        <view class="budget-line"><text>本月支出</text><text>{{expense}}</text></view>
+      </view>
+      <view class="budget-details" wx:else><view class="muted">为这个月设置支出预算</view><button class="text-button" bindtap="openBudget">设置月预算 ›</button></view>
+    </view>
+  </view>
+</view>
+<view class="dialog-mask" wx:if="{{showBudgetDialog}}" bindtap="closeBudget"><view class="dialog-card" catchtap="none">
+  <view class="section-title">{{year}}年{{month}}月预算</view>
+  <view class="muted">{{ledgerName}} · 按本月支出计算剩余预算</view>
+  <input class="form-input" type="digit" maxlength="13" value="{{budgetAmount}}" placeholder="请输入月预算金额（元）" bindinput="onBudgetInput" disabled="{{saving}}" />
+  <view class="dialog-actions"><button class="text-button" bindtap="closeBudget" disabled="{{saving}}">取消</button><button class="text-button" bindtap="saveBudget" disabled="{{saving}}">{{saving ? '保存中…' : '保存'}}</button></view>
+</view></view>

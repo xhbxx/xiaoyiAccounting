@@ -1,0 +1,124 @@
+.discover-header {
+  height: 350rpx;
+  box-sizing: border-box;
+  background: linear-gradient(to bottom, #f4c313fa 0%, #f4c313fa 70%, rgba(255, 183, 77, 0) 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.discover-title {
+  transform: translateY(-10rpx);
+  font-size: 50rpx;
+  color: #040404;
+  text-align: center;
+}
+.ledger-caption {
+  padding: 8rpx 32rpx 0;
+  font-size: 24rpx;
+  color: #040404;
+  text-align: center;
+  word-break: break-all;
+}
+.discover-body { margin-top: -40rpx; }
+.card-title {
+  min-height: 104rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 32rpx;
+}
+.monthly-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12rpx;
+  padding: 12rpx 0 36rpx;
+}
+.month-picker {
+  border-right: 1rpx solid #ccc;
+  padding-right: 18rpx;
+  font-size: 26rpx;
+}
+.month-number { font-size: 44rpx; }
+.month-year {
+  display: block;
+  color: #71685f;
+  font-size: 22rpx;
+  margin-top: 8rpx;
+}
+.summary-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24rpx;
+  min-width: 0;
+  font-size: 30rpx;
+  word-break: break-all;
+}
+.budget-content {
+  display: flex;
+  align-items: center;
+  gap: 24rpx;
+  padding-bottom: 32rpx;
+}
+.budget-ring {
+  position: relative;
+  width: 210rpx;
+  height: 210rpx;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #f0f0ed;
+}
+.ring-half {
+  position: absolute;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+}
+.ring-right { right: 0; }
+.ring-left { left: 0; }
+.ring-segment {
+  position: absolute;
+  top: 0;
+  width: 210rpx;
+  height: 210rpx;
+  box-sizing: border-box;
+  border: 18rpx solid #f4c313;
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+  border-radius: 50%;
+}
+.ring-right .ring-segment { right: 0; }
+.ring-left .ring-segment { left: 0; }
+.ring-center {
+  position: absolute;
+  top: 18rpx;
+  right: 18rpx;
+  bottom: 18rpx;
+  left: 18rpx;
+  border-radius: 50%;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8rpx;
+}
+.ring-label { color: #71685f; font-size: 26rpx; }
+.ring-percent { color: #332d28; font-size: 38rpx; font-weight: 600; }
+.budget-details { flex: 1; min-width: 0; }
+.budget-line {
+  display: flex;
+  justify-content: space-between;
+  gap: 16rpx;
+  padding: 14rpx 0;
+  font-size: 26rpx;
+  color: #71685f;
+}
+.budget-line.remaining {
+  color: #332d28;
+  font-size: 30rpx;
+  border-bottom: 1rpx solid #eee;
+  margin-bottom: 10rpx;
+}

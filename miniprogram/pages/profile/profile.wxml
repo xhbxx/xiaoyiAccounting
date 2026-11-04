@@ -1,0 +1,20 @@
+<view class="profile-header" style="padding-top: {{statusBarHeight + 44}}px;">
+  <view class="profile-identity">
+    <image wx:if="{{avatarUrl}}" class="avatar" src="{{avatarUrl}}" mode="aspectFill" />
+    <view wx:else class="avatar avatar-placeholder">翼</view>
+    <text class="profile-name">{{nickName}}</text>
+  </view>
+  <view class="profile-statistics">
+    <view class="profile-stat"><text class="stat-number">{{continueDay}}</text><text>连续记账天数</text></view>
+    <view class="profile-stat"><text class="stat-number">{{allDay}}</text><text>记账总天数</text></view>
+    <view class="profile-stat"><text class="stat-number">{{allCnt}}</text><text>记账总笔数</text></view>
+  </view>
+</view>
+<view class="screen-body profile-body">
+  <view class="empty-state" wx:if="{{loading}}">正在加载…</view>
+  <view class="empty-state" wx:elif="{{loadError}}" bindtap="loadProfile">{{loadError}} · 点击重试</view>
+  <view class="section-card">
+    <view class="settings-row" bindtap="openLedgers"><view class="row-label"><image class="profile-menu-icon" src="/images/账本.png" mode="aspectFit" />我的账本</view><text class="chevron">›</text></view>
+    <view class="settings-row" bindtap="openSettings"><view class="row-label"><image class="profile-menu-icon" src="/images/setting.png" mode="aspectFit" />设置</view><text class="chevron">›</text></view>
+  </view>
+</view>

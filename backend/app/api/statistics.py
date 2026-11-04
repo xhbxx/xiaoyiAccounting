@@ -1,12 +1,12 @@
 from collections import defaultdict
 from datetime import datetime, timedelta
 from decimal import Decimal
-from fastapi import APIRouter, Depends
-from numpy import average
+from fastapi import APIRouter, Depends, HTTPException
+from typing import Literal
 from sqlalchemy import select
 from app.db.database import get_db
-from app.deps import get_current_user
-from app.models import Bill, UserSetting
+from app.deps import get_current_user, get_user_ledger
+from app.models import Bill
 
 
 router=APIRouter(prefix="/statistics",tags=["图表"])
@@ -76,6 +76,7 @@ def query(period,first_date,current_date):
                 endC=datetime(startC.year+1,1,1)
             else:
                 endC=datetime(startC.year,startC.month+1,1)
+            index += 1
             if startC==current_start:
                 label="本月"
             elif startC.year==current_start.year:
@@ -107,6 +108,7 @@ def query(period,first_date,current_date):
         startC=start
         while startC<=current_start:
             endC=datetime(startC.year+1,1,1)
+            index += 1
 
             if startC==current_start:
                 label="今年"
@@ -205,7 +207,7 @@ def calculate(bills,period,start_date,end_date,current_date):
     ranking = []
 
     for category, category_amount in category_totals.items():
-        percentage = category_amount / total * Decimal("100")
+        percentage = category_amount / total * Decimal("100") if total else Decimal('0')
 
         ranking.append({
             "category": category,
@@ -230,30 +232,27 @@ def calculate(bills,period,start_date,end_date,current_date):
 
 @router.get("")
 async def statistics(
-    type:str,
-    period:str,
+    type:Literal['expense', 'income'],
+    period:Literal['week', 'month', 'year'],
     date:str,
     ledger_id:int|None=None,
     db=Depends(get_db),
     user=Depends(get_current_user)
 ):
-    result=await db.execute(select(UserSetting).where(UserSetting.user_id==user.id))
-    setting=result.scalar()
-    if setting is None:
-        return
-    ledger_id=setting.last_ledger_id
-
-    current_date=datetime.strptime(date,"%Y-%m-%d")
+    ledger = await get_user_ledger(db, user, ledger_id)
+    ledger_id = ledger.id
+    try:
+        current_date=datetime.strptime(date,"%Y-%m-%d")
+    except ValueError:
+        raise HTTPException(status_code=400, detail='日期格式必须为 YYYY-MM-DD')
 
     result=await db.execute(select(Bill).where(
         Bill.ledger_id==ledger_id,
         Bill.user_id==user.id
     ).order_by(Bill.bill_date.asc()).limit(1))
     first_bill=result.scalar()
-    if first_bill is None:
-        return
-    
-    periods=query(period,first_bill.bill_date,current_date)
+    first_date = min(first_bill.bill_date, current_date) if first_bill else current_date
+    periods=query(period,first_date,current_date)
     for item in periods:
         result=await db.execute(select(Bill).where( Bill.user_id == user.id,
                                                     Bill.ledger_id == ledger_id,
@@ -261,8 +260,6 @@ async def statistics(
                                                     Bill.bill_date>=item["start_date"],
                                                     Bill.bill_date<item["end_date"]))
         bills=result.scalars().all()
-        if bills==None:
-            break
         data = calculate(
         bills,
         period,
@@ -271,6 +268,8 @@ async def statistics(
         current_date
     )
         item.update(data)
+        item['start_date'] = item['start_date'].strftime('%Y-%m-%d')
+        item['end_date'] = (item['end_date'] - timedelta(days=1)).strftime('%Y-%m-%d')
     return {
     "type": type,
     "period": period,

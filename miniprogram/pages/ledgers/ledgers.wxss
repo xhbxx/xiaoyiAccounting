@@ -1,0 +1,5 @@
+.ledgers-body { padding-bottom: calc(40rpx + env(safe-area-inset-bottom)); }
+.ledger-hint { padding: 0 8rpx 24rpx; line-height: 1.7; }
+.ledger-option { display: flex; align-items: center; gap: 24rpx; min-height: 112rpx; flex: 1; min-width: 0; }
+.ledger-name { min-width: 0; word-break: break-all; }
+.current-tag { display: block; color: #785b00; font-size: 23rpx; margin-top: 8rpx; }

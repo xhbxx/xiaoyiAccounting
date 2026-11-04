@@ -1,0 +1,17 @@
+<view class="screen-body ledgers-body">
+  <view class="muted ledger-hint">切换后，明细、图表、记账和月预算使用选中的账本。</view>
+  <view class="empty-state" wx:if="{{loading}}">正在加载账本…</view>
+  <view class="empty-state" wx:elif="{{loadError}}" bindtap="loadLedgers">{{loadError}} · 点击重试</view>
+  <view class="section-card" wx:else>
+    <view class="settings-row" wx:for="{{ledgers}}" wx:key="id">
+      <view class="ledger-option" data-id="{{item.id}}" bindtap="selectLedger"><view class="row-icon">账</view><view class="ledger-name">{{item.name}}<text class="current-tag" wx:if="{{currentId === item.id}}">当前账本</text></view></view>
+      <button class="text-button" data-id="{{item.id}}" bindtap="openRename" disabled="{{saving}}">改名</button>
+    </view>
+  </view>
+  <button class="primary-button" bindtap="openCreate" disabled="{{saving}}">新增账本</button>
+</view>
+<view class="dialog-mask" wx:if="{{showDialog}}" bindtap="closeDialog"><view class="dialog-card" catchtap="none">
+  <view class="section-title">{{editingId ? '账本改名' : '新增账本'}}</view>
+  <input class="form-input" maxlength="64" value="{{draftName}}" placeholder="请输入账本名称" bindinput="onNameInput" disabled="{{saving}}" />
+  <view class="dialog-actions"><button class="text-button" bindtap="closeDialog" disabled="{{saving}}">取消</button><button class="text-button" bindtap="saveLedger" disabled="{{saving}}">{{saving ? '保存中…' : '保存'}}</button></view>
+</view></view>

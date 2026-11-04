@@ -1,0 +1,52 @@
+<!--pages/chart/chart.wxml-->
+<view class="top" style="padding-top:10px">
+  <picker mode="selector" range="{{choise}}" value="{{choiseIndex}}" bindchange="onChange">
+    <view class="title">
+      <view class="titleText">{{choised}}</view>
+      <view class="down">▼</view>
+    </view>
+  </picker>
+  <view class="Time">
+    <view class="time {{activeIndex==0?'active':''}}" data-index="0" bindtap="switchTime">周
+    </view>
+    <view class="time {{activeIndex==1?'active':''}}" data-index="1" bindtap="switchTime">月
+    </view>
+    <view class="time {{activeIndex==2?'active':''}}" data-index="2"
+    bindtap="switchTime">年
+    </view>
+  </view>
+</view>
+
+<view class="empty-state" wx:if="{{loading}}">正在加载统计…</view>
+<view class="empty-state" wx:elif="{{loadError}}" bindtap="loadStatistics">{{loadError}} · 点击重试</view>
+<scroll-view hidden="{{loading || loadError}}" class="period-scroll" scroll-x="true" scroll-with-animation="true" scroll-left="{{periodScrollLeft}}">
+  <view
+    wx:for="{{statisticsData.items}}"
+    wx:key="index"
+    class="period-item {{selectedPeriodIndex == item.index ? 'selected' : ''}}"
+    data-index="{{item.index}}"
+    bindtap="selectPeriod">
+    {{item.label}}
+  </view>
+</scroll-view>
+<view class="summary" hidden="{{loading || loadError}}">
+  <view>总{{choised}} <text class="summary-value">{{currentStatistics.total}}</text></view>
+  <view>日均{{choised}} <text class="summary-value">{{currentStatistics.average}}</text></view>
+</view>
+
+<!-- 折线图区域 -->
+<view class="chart-container" style="visibility: {{loading || loadError ? 'hidden' : 'visible'}}">
+  <ec-canvas
+    id="trendChart"
+    canvas-id="trendChart"
+    ec="{{ec}}">
+  </ec-canvas>
+</view>
+<view class="ranking" hidden="{{loading || loadError}}">
+  <view class="ranking-title">分类排行</view>
+  <view class="empty-state" wx:if="{{!currentStatistics.ranking.length}}">该周期暂无{{choised}}记录</view>
+  <view class="ranking-item" wx:for="{{currentStatistics.ranking}}" wx:key="category">
+    <text>{{index + 1}}. {{item.category}}</text>
+    <view class="ranking-amount">{{item.amount}} 元 <text class="percentage">{{item.percentage}}%</text></view>
+  </view>
+</view>

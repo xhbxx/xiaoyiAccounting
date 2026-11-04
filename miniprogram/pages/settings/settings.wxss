@@ -1,0 +1,10 @@
+.settings-body { padding-bottom: calc(40rpx + env(safe-area-inset-bottom)); }
+.avatar-button { width: 120rpx; height: 120rpx; flex-shrink: 0; padding: 0; margin: 16rpx 0; line-height: 1; background: transparent; }
+.type-options { display: flex; justify-content: space-around; align-items: center; gap: 24rpx; padding: 12rpx 0 28rpx; }
+.category-tab { padding: 20rpx; border-radius: 12rpx; flex: 1; text-align: center; }
+.category-tab.active { background: #fff4bb; color: #5d4139; }
+.category-hint { line-height: 1.7; padding-bottom: 20rpx; }
+.category-label { flex: 1; word-break: break-all; }
+.category-icon { width: 60rpx; height: 60rpx; flex-shrink: 0; }
+.category-actions { display: flex; gap: 24rpx; flex-shrink: 0; }
+.danger { color: #b93830; }

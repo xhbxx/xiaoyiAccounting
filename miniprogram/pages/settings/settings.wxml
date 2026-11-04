@@ -1,0 +1,41 @@
+<view class="screen-body settings-body">
+  <view class="empty-state" wx:if="{{loading}}">正在加载设置…</view>
+  <view class="empty-state" wx:elif="{{loadError}}" bindtap="loadSettings">{{loadError}} · 点击重试</view>
+  <block wx:else>
+    <view class="section-card">
+      <view class="section-title">账户设置</view>
+      <view class="settings-row"><text>头像</text>
+        <button wx:if="{{canChooseAvatar}}" class="avatar-button" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar" disabled="{{saving}}">
+          <image wx:if="{{avatarUrl}}" class="avatar" src="{{avatarUrl}}" mode="aspectFill" /><view wx:else class="avatar avatar-placeholder">翼</view>
+        </button>
+        <button wx:else class="avatar-button" bindtap="chooseImage" disabled="{{saving}}"><image wx:if="{{avatarUrl}}" class="avatar" src="{{avatarUrl}}" mode="aspectFill" /><view wx:else class="avatar avatar-placeholder">翼</view></button>
+      </view>
+      <view class="settings-row" bindtap="editName"><text>姓名</text><view class="row-label"><text>{{nickName || '点击设置'}}</text><text class="chevron">›</text></view></view>
+    </view>
+    <view class="section-card">
+      <view class="section-title">默认记账类型</view>
+      <radio-group class="type-options" bindchange="changeDefault">
+        <label><radio value="expense" checked="{{defaultType === 'expense'}}" color="#b78b00" disabled="{{saving}}" />支出</label>
+        <label><radio value="income" checked="{{defaultType === 'income'}}" color="#b78b00" disabled="{{saving}}" />收入</label>
+      </radio-group>
+    </view>
+    <view class="section-card">
+      <view class="section-title">类别设置</view>
+      <view class="type-options category-tabs"><view class="category-tab {{categoryType === 'expense' ? 'active' : ''}}" data-type="expense" bindtap="switchCategory">支出类别</view><view class="category-tab {{categoryType === 'income' ? 'active' : ''}}" data-type="income" bindtap="switchCategory">收入类别</view></view>
+      <view class="muted category-hint">系统预设类别只读。自定义类别修改后，历史账单保留原名称。</view>
+      <view class="settings-row" wx:for="{{categories}}" wx:key="id">
+        <view class="row-label category-label"><image class="category-icon" src="{{item.image}}" /><text>{{item.name}}</text></view>
+        <text wx:if="{{item.is_system}}" class="muted">系统预设</text>
+        <view wx:else class="category-actions"><button class="text-button" data-id="{{item.id}}" bindtap="editCategory" disabled="{{saving}}">改名</button><button class="text-button danger" data-id="{{item.id}}" bindtap="deleteCategory" disabled="{{saving}}">删除</button></view>
+      </view>
+      <button class="primary-button" bindtap="addCategory" disabled="{{saving}}">新增类别</button>
+    </view>
+  </block>
+</view>
+<view class="dialog-mask" wx:if="{{nameDialog || categoryDialog}}" bindtap="closeDialog">
+  <view class="dialog-card" catchtap="none">
+    <view class="section-title">{{nameDialog ? '修改姓名' : editingCategoryId ? '类别改名' : '新增类别'}}</view>
+    <input class="form-input" value="{{draftName}}" maxlength="64" placeholder="请输入名称" bindinput="onNameInput" disabled="{{saving}}" />
+    <view class="dialog-actions"><button class="text-button" bindtap="closeDialog" disabled="{{saving}}">取消</button><button wx:if="{{nameDialog}}" class="text-button" bindtap="saveName" disabled="{{saving}}">{{saving ? '保存中…' : '保存'}}</button><button wx:else class="text-button" bindtap="saveCategory" disabled="{{saving}}">{{saving ? '保存中…' : '保存'}}</button></view>
+  </view>
+</view>

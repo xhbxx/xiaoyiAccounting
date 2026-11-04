@@ -1,0 +1,47 @@
+<!--pages/detail/detail.wxml-->
+
+<!--顶部导航栏-->
+<view class="top" style="padding-top:10px">
+  <view class="title">小翼记账</view>
+  <view class="stats">
+    <picker mode="date" fields="month" value="{{year}}-{{month}}" start="2000-01-01" end="2100-12-31" bindchange="onDateChange">
+      <view class="date1">
+        <text class="year">{{year}}年</text>
+      </view>
+      <view class="date2">
+        <text class="month">{{month}}月</text>
+        <view class="down">▼</view>
+      </view>
+    </picker>
+    <view class="statItem" bindTap="goIncome">
+      <text class="stateLable">收入</text>
+      <text class="stateValue">{{totleIncome}}</text>
+    </view>
+    <view class="statItem" bindTap="goOutcome">
+      <text class="stateLable">支出</text>
+      <text class="stateValue">{{totleOutcome}}</text>
+    </view>
+  </view>
+</view>
+
+<!--账单栏-->
+<view class="billList">
+  <view class="empty-state" wx:if="{{loading}}">正在加载账单…</view>
+  <view class="empty-state" wx:elif="{{loadError}}" bindtap="loadHome">{{loadError}} · 点击重试</view>
+  <view class="empty-state" wx:elif="{{!groups.length}}">本月还没有账单，点击“记账”记录第一笔</view>
+  <view class="billgroup" wx:for="{{groups}}" wx:key="date" hidden="{{loading || loadError}}">
+    <view class="date">
+      <view class="dateD">{{item.date_text}} {{item.week}}</view>
+      <view class="dateE">
+        <text wx:if="{{item.expense_total>0}}">支出:{{item.expense_total}}</text>
+        <text wx:if="{{item.income_total>0}}"> 收入:{{item.income_total}}</text>
+   </view>
+    </view>
+    <view class="bill" wx:for="{{item.items}}" wx:key="id" data-id="{{item.id}}" bindtap="onBillTap">
+      <image class="icon" src="{{item.image}}"></image>
+      <view class="billText">{{item.remark || item.category}}</view>
+      <view class="billAmount">{{item.amount_text}}</view>
+    </view>
+    <view class="line"></view>
+  </view>
+</view>
