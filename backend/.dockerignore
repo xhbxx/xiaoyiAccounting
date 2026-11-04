@@ -1,0 +1,10 @@
+.env
+.env.*
+.venv/
+.git/
+.vscode/
+.codeartsdoer/
+__pycache__/
+*.pyc
+tests/
+uploads/
