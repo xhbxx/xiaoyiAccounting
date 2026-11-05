@@ -15,7 +15,7 @@ for key, value in {
 }.items():
     os.environ[key] = value
 
-from httpx import ASGITransport, AsyncClient, Request, Response
+from httpx import ASGITransport, AsyncClient, ConnectError, ReadTimeout, Request, Response
 from PIL import Image
 from sqlalchemy import select, func
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
@@ -153,6 +153,35 @@ class AccountFeatureTests(unittest.IsolatedAsyncioTestCase):
             client.return_value.__aenter__.return_value.get = AsyncMock(
                 return_value=Response(200, json={'errcode': 40029}, request=Request('GET', 'https://test')))
             await self.call('POST', '/auth/wechat-login', 400, json={'code': 'invalid'})
+
+    async def test_wechat_failures_log_diagnostics_without_credentials(self):
+        secret = 'private-diagnostic-test-secret'
+        request = Request('GET', 'https://api.weixin.qq.com/sns/jscode2session',
+                          params={'secret': secret, 'js_code': 'private-login-code'})
+        failures = (
+            (ConnectError(str(request.url), request=request), 502, 'ConnectError'),
+            (ReadTimeout(str(request.url), request=request), 504, 'ReadTimeout'),
+        )
+        for error, status, diagnostic in failures:
+            with self.subTest(diagnostic=diagnostic), patch.object(auth.httpx, 'AsyncClient') as client:
+                client.return_value.__aenter__.return_value.get = AsyncMock(side_effect=error)
+                with self.assertLogs(auth.logger, level='WARNING') as logs:
+                    response = await self.call('POST', '/auth/wechat-login', status,
+                                               json={'code': 'private-login-code'})
+                output = '\n'.join(logs.output) + str(response)
+                self.assertIn(diagnostic, output)
+                self.assertNotIn(secret, output)
+                self.assertNotIn('private-login-code', output)
+
+        with patch.object(auth.httpx, 'AsyncClient') as client:
+            client.return_value.__aenter__.return_value.get = AsyncMock(
+                return_value=Response(503, request=request))
+            with self.assertLogs(auth.logger, level='WARNING') as logs:
+                await self.call('POST', '/auth/wechat-login', 502, json={'code': 'private-login-code'})
+            output = '\n'.join(logs.output)
+            self.assertIn('503', output)
+            self.assertNotIn(secret, output)
+            self.assertNotIn('private-login-code', output)
 
 
 if __name__ == '__main__':

@@ -24,7 +24,10 @@ function send(url, method, data, filePath) {
         error.statusCode = response.statusCode
         reject(error)
       },
-      fail: () => reject(new Error('网络连接失败，请检查服务是否启动'))
+      fail: error => {
+        console.error('后端请求失败', url, error.errMsg)
+        reject(new Error('网络连接失败，请检查服务是否启动'))
+      }
     }
     if (filePath) {
       wx.uploadFile({ ...options, filePath, name: 'file' })

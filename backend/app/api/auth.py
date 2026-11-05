@@ -1,3 +1,5 @@
+import logging
+
 import httpx
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import select
@@ -11,6 +13,7 @@ from app.models import User, Ledger, UserSetting
 from app.schemas import WechatLoginRequest, LoginResponse, UserInfo
 
 router = APIRouter(prefix="/auth", tags=["认证"])
+logger = logging.getLogger(__name__)
 
 
 async def exchange_wechat_code(code):
@@ -25,7 +28,15 @@ async def exchange_wechat_code(code):
             )
             response.raise_for_status()
             session = response.json()
-    except (httpx.HTTPError, ValueError):
+    except httpx.TimeoutException as error:
+        logger.warning("WeChat login request timed out: %s", type(error).__name__)
+        raise HTTPException(status_code=504, detail="连接微信登录接口超时，请稍后重试")
+    except httpx.HTTPStatusError as error:
+        logger.warning("WeChat login HTTP status: %s", error.response.status_code)
+        raise HTTPException(status_code=502, detail="微信登录服务暂时不可用，请重试")
+    except (httpx.HTTPError, ValueError) as error:
+        # 异常文本可能包含 AppSecret 和登录 code，只记录异常类型。
+        logger.warning("WeChat login request failed: %s", type(error).__name__)
         raise HTTPException(status_code=502, detail="微信登录服务暂时不可用，请重试")
     if not isinstance(session, dict):
         raise HTTPException(status_code=502, detail="微信登录服务返回异常")
