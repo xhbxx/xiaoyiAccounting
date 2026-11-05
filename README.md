@@ -101,6 +101,8 @@ py -3.12 -m venv .venv
 
 容器使用 `uvicorn app.main:app --host 0.0.0.0 --port 8000` 启动。云托管的目标目录和端口配置可参考[官方说明](https://docs.cloudbase.net/run/deploy/deploy/introduce)。
 
+开启云托管开放接口服务后，平台会通过 `/app/cert/certificate.crt` 提供 HTTPS 证书。后端检测到该文件时，会在公共 CA 的基础上加载平台证书，用于请求微信登录接口。相关要求见[微信云托管证书说明](https://developers.weixin.qq.com/miniprogram/dev/wxcloudservice/wxcloudrun/src/guide/weixin/open)。连接失败时，运行日志会记录异常类型、平台证书是否存在和脱敏后的错误详情。
+
 在云托管的环境变量中配置以下内容。
 
 | 变量 | 取值说明 |
