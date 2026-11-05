@@ -2,6 +2,7 @@
 from datetime import datetime, timedelta, timezone
 from io import BytesIO
 import os
+import ssl
 from pathlib import Path
 import tempfile
 import unittest
@@ -158,9 +159,12 @@ class AccountFeatureTests(unittest.IsolatedAsyncioTestCase):
         secret = 'private-diagnostic-test-secret'
         request = Request('GET', 'https://api.weixin.qq.com/sns/jscode2session',
                           params={'secret': secret, 'js_code': 'private-login-code'})
+        tls_error = ConnectError(str(request.url), request=request)
+        tls_error.__cause__ = ssl.SSLCertVerificationError(str(request.url))
         failures = (
             (ConnectError(str(request.url), request=request), 502, 'ConnectError'),
             (ReadTimeout(str(request.url), request=request), 504, 'ReadTimeout'),
+            (tls_error, 502, 'SSLCertVerificationError'),
         )
         for error, status, diagnostic in failures:
             with self.subTest(diagnostic=diagnostic), patch.object(auth.httpx, 'AsyncClient') as client:

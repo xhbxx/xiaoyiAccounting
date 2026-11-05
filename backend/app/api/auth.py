@@ -36,7 +36,14 @@ async def exchange_wechat_code(code):
         raise HTTPException(status_code=502, detail="微信登录服务暂时不可用，请重试")
     except (httpx.HTTPError, ValueError) as error:
         # 异常文本可能包含 AppSecret 和登录 code，只记录异常类型。
-        logger.warning("WeChat login request failed: %s", type(error).__name__)
+        root_error = error
+        while root_error.__cause__ is not None:
+            root_error = root_error.__cause__
+        logger.warning(
+            "WeChat login request failed: %s (cause=%s, errno=%s, reason=%s)",
+            type(error).__name__, type(root_error).__name__,
+            getattr(root_error, 'errno', None), getattr(root_error, 'reason', None),
+        )
         raise HTTPException(status_code=502, detail="微信登录服务暂时不可用，请重试")
     if not isinstance(session, dict):
         raise HTTPException(status_code=502, detail="微信登录服务返回异常")

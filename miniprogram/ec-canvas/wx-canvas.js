@@ -37,6 +37,10 @@ export default class WxCanvas {
     // noop
   }
 
+  removeEventListener() {
+    // 触摸事件由 ec-canvas 转发，与 addEventListener 保持配对。
+  }
+
   attachEvent() {
     // noop
   }
