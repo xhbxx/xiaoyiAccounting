@@ -30,7 +30,7 @@
 ├── miniprogram/              小程序页面、组件、图片和请求封装
 ├── backend/
 │   ├── app/                  后端接口、数据模型和配置
-│   ├── migrations/           数据库增量 SQL
+│   ├── migrations/           空库初始化与数据库增量 SQL
 │   ├── tests/                后端接口回归测试
 │   ├── requirements.txt      Python 依赖
 │   ├── Dockerfile            云托管镜像构建配置
@@ -63,7 +63,9 @@ WECHAT_SECRET=your_miniprogram_appsecret
 
 `WECHAT_APPID` 需要与微信开发者工具中使用的小程序 AppID 一致。`.env` 已加入 Git 忽略规则，密钥保存在本地配置或部署环境变量中。
 
-数据库需要具备完整业务表和系统预设类别。当前仓库仅提供 `backend/migrations/001_monthly_budgets.sql`，用于给已有数据库增加月预算表，完整的空库初始化脚本仍待补齐。该 SQL 的外键使用 `INT UNSIGNED`，执行前需要确认已有 `ledgers.id` 的类型一致。
+在数据库管理工具中选中与 `DB_NAME` 对应的空数据库，按 UTF-8 编码导入 `backend/migrations/000_initial_schema.sql`。该文件创建 6 张业务表并初始化 11 个系统预设类别，首次微信登录时会自动创建用户、默认账本和用户设置。导入后可以执行 `SHOW TABLES;` 检查表结构，通过 `SELECT name, type FROM categories WHERE user_id IS NULL;` 检查预设类别。
+
+已有完整业务表、仅缺少月预算表的数据库，可以执行 `backend/migrations/001_monthly_budgets.sql`。该 SQL 的外键使用 `INT UNSIGNED`，执行前需要确认已有 `ledgers.id` 的类型一致。
 
 ### 启动后端
 

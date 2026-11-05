@@ -1,4 +1,4 @@
-const BASE_URL = 'http://127.0.0.1:8000'
+const BASE_URL = 'https://xiao-341383-4-1525207456.sh.run.tcloudbase.com'
 
 function send(url, method, data, filePath) {
   const token = wx.getStorageSync('token')
