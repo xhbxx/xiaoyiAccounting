@@ -40,8 +40,8 @@ Page({
         request('/profile')
       ])
       this.setData({
-        itemE: expense.items.map(item => ({ ...item, image: categoryImage(item.name, true) })),
-        itemI: income.items.map(item => ({ ...item, image: categoryImage(item.name, true) }))
+        itemE: expense.items.map(item => ({ ...item, image: categoryImage(item, true) })),
+        itemI: income.items.map(item => ({ ...item, image: categoryImage(item, true) }))
       })
       if (!this.data.editingId && !this.typeTouched) {
         const type = profile.settings.default_bill_type

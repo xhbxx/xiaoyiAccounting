@@ -14,7 +14,15 @@
   <view class="empty-state" wx:if="{{loading}}">正在加载…</view>
   <view class="empty-state" wx:elif="{{loadError}}" bindtap="loadProfile">{{loadError}} · 点击重试</view>
   <view class="section-card">
-    <view class="settings-row" bindtap="openLedgers"><view class="row-label"><image class="profile-menu-icon" src="/images/账本.png" mode="aspectFit" />我的账本</view><text class="chevron">›</text></view>
-    <view class="settings-row" bindtap="openSettings"><view class="row-label"><image class="profile-menu-icon" src="/images/setting.png" mode="aspectFit" />设置</view><text class="chevron">›</text></view>
+    <view class="settings-row" bindtap="openLedgers">
+      <view class="row-label">
+        <image class="profile-menu-icon" src="/images/账本.png" mode="aspectFit" />我的账本
+      </view><text class="chevron">›</text>
+    </view>
+    <view class="settings-row" bindtap="openSettings">
+      <view class="row-label">
+        <image class="profile-menu-icon" src="/images/setting.png" mode="aspectFit" />设置
+      </view><text class="chevron">›</text>
+    </view>
   </view>
 </view>

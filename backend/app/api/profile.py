@@ -1,8 +1,6 @@
 from pathlib import Path
 from uuid import uuid4
 from datetime import datetime, timedelta, timezone
-from io import BytesIO
-from PIL import Image, UnidentifiedImageError
 
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
 from sqlalchemy import select, func
@@ -11,6 +9,7 @@ from app.db.database import get_db
 from app.deps import get_current_user
 from app.models import UserSetting, Bill
 from app.schemas import AccountWrite, SettingWrite
+from app.images import read_image_upload
 
 router = APIRouter(prefix="/profile", tags=["我的与设置"])
 AVATAR_DIR = Path(__file__).resolve().parents[2] / 'uploads' / 'avatars'
@@ -63,20 +62,7 @@ async def update_settings(item: SettingWrite, db=Depends(get_db), user=Depends(g
 
 @router.post('/avatar')
 async def update_avatar(file: UploadFile = File(...), db=Depends(get_db), user=Depends(get_current_user)):
-    try:
-        content = await file.read(2 * 1024 * 1024 + 1)
-    finally:
-        await file.close()
-    if len(content) > 2 * 1024 * 1024:
-        raise HTTPException(status_code=400, detail='头像大小不能超过 2MB')
-    try:
-        with Image.open(BytesIO(content)) as image:
-            if image.format not in ('JPEG', 'PNG') or image.width * image.height > 16000000:
-                raise ValueError('invalid avatar format or size')
-            suffix = '.jpg' if image.format == 'JPEG' else '.png'
-            image.verify()
-    except (OSError, ValueError, UnidentifiedImageError, Image.DecompressionBombError):
-        raise HTTPException(status_code=400, detail='请选择 JPG 或 PNG 图片')
+    content, suffix = await read_image_upload(file, '头像')
     AVATAR_DIR.mkdir(parents=True, exist_ok=True)
     filename = f'{user.id}_{uuid4().hex}{suffix}'
     path = AVATAR_DIR / filename

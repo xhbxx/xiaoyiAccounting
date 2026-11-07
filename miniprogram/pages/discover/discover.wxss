@@ -1,25 +1,3 @@
-.discover-header {
-  height: 350rpx;
-  box-sizing: border-box;
-  background: linear-gradient(to bottom, #f4c313fa 0%, #f4c313fa 70%, rgba(255, 183, 77, 0) 100%);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-.discover-title {
-  transform: translateY(-10rpx);
-  font-size: 50rpx;
-  color: #040404;
-  text-align: center;
-}
-.ledger-caption {
-  padding: 8rpx 32rpx 0;
-  font-size: 24rpx;
-  color: #040404;
-  text-align: center;
-  word-break: break-all;
-}
-.discover-body { margin-top: -40rpx; }
 .card-title {
   min-height: 104rpx;
   display: flex;

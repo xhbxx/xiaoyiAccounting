@@ -1,4 +1,4 @@
-const BASE_URL = 'https://xiao-341383-4-1525207456.sh.run.tcloudbase.com'
+const BASE_URL = 'azsworld.top
 
 function send(url, method, data, filePath) {
   const token = wx.getStorageSync('token')
@@ -30,7 +30,7 @@ function send(url, method, data, filePath) {
       }
     }
     if (filePath) {
-      wx.uploadFile({ ...options, filePath, name: 'file' })
+      wx.uploadFile({ ...options, filePath, name: 'file', formData: data })
     } else {
       wx.request({ ...options, method, data })
     }

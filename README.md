@@ -126,6 +126,12 @@ py -3.12 -m venv .venv
 
 当前前端使用 `wx.request` 和 `wx.uploadFile` 访问后端。使用 `wx.cloud.callContainer` 接入云托管的方式需要另行适配。
 
+## 类别图片
+
+新增自定义类别时，可以从现有图标中选择，也可以上传 JPG 或 PNG 图片，单张最大 2MB。上传图片与类别记录在同一个事务中保存，图片内容存放在 MySQL 的 `categories.icon_data` 字段中。类别列表和明细接口按需读取图片地址，图片内容通过独立读取接口加载。
+
+已有数据库需要先执行 `backend/migrations/002_category_images.sql`，再部署新版后端并重新编译小程序。该脚本为类别表新增可空的 `MEDIUMBLOB` 字段，支持重复执行。首次新建数据库也需要在完成基础表初始化后执行该脚本。
+
 ## 测试
 
 在项目根目录执行前端回归测试，需要已安装 Node.js。

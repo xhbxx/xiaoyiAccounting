@@ -8,3 +8,10 @@
 .category-icon { width: 60rpx; height: 60rpx; flex-shrink: 0; }
 .category-actions { display: flex; gap: 24rpx; flex-shrink: 0; }
 .danger { color: #b93830; }
+.category-image-preview { display: flex; align-items: center; justify-content: space-between; padding: 8rpx 0 24rpx; }
+.category-preview-icon { width: 96rpx; height: 96rpx; }
+.category-icon-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12rpx; margin-top: 20rpx; }
+.category-icon-option { display: flex; flex-direction: column; align-items: center; gap: 8rpx; padding: 16rpx 0; margin: 0; width: 100%; line-height: 1.4; font-size: 23rpx; color: #332d28; border: 2rpx solid transparent; border-radius: 12rpx; }
+.category-icon-option image { width: 56rpx; height: 56rpx; }
+.category-icon-option.chosen { background: #fff4bb; border-color: #b78b00; }
+.category-upload-hint { padding-top: 16rpx; line-height: 1.6; }

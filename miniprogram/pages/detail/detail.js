@@ -119,7 +119,7 @@ Page({
         totleIncome: data.period.income,
         totleOutcome: data.period.expense,
         groups: data.groups.map(group => ({ ...group,
-          items: group.items.map(item => ({ ...item, image: categoryImage(item.category) })) })),
+          items: group.items.map(item => ({ ...item, image: categoryImage({ name: item.category, icon: item.icon }) })) })),
         ledger: data.ledger
       });
     } catch (e) {

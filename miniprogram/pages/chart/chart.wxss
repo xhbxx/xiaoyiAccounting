@@ -1,6 +1,6 @@
 .top {
   height: 200rpx;
-  background: linear-gradient(to bottom,
+  background-image: linear-gradient(to bottom,
       #f4c313fa 0%, #f4c313fa 100%, rgba(255, 183, 77, 0) 100%);
   box-sizing: content-box;
   display: flex;

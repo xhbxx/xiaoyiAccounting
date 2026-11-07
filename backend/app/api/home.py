@@ -1,9 +1,9 @@
 from datetime import datetime
 from fastapi import APIRouter, Depends, Query
 from app.deps import get_current_user, get_user_ledger
-from sqlalchemy import select
+from sqlalchemy import or_, select
 from app.db.database import get_db
-from app.models import Bill, MonthlyBudget, Ledger
+from app.models import Bill, MonthlyBudget, Ledger, Category
 from app.schemas import HomeResponse, LedgerInfo, PeriodInfo, BillGroup, BillItem, BudgetWrite
 
 router = APIRouter(tags=["详细"])
@@ -34,6 +34,10 @@ async def home(
         ).order_by(Bill.bill_date.desc(), Bill.id.desc())
     )
     bills = result.scalars().all() 
+    category_result = await db.execute(select(Category.name, Category.type, Category.icon).where(
+        or_(Category.user_id.is_(None), Category.user_id == current_user.id),
+    ))
+    category_icons = {(item.type, item.name): item.icon for item in category_result}
 
     income=0
     outcome=0
@@ -74,7 +78,7 @@ async def home(
                 amount=f"{b.amount:.2f}",
                 amount_text=amount_text,
                 category=b.category or "",
-                icon=None,
+                icon=category_icons.get((b.type, b.category)),
                 remark=b.remark,
                 bill_date=b.bill_date.strftime('%Y-%m-%d %H:%M:%S'),
             )

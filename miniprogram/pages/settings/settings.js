@@ -1,14 +1,18 @@
 const { request, mediaUrl } = require('../../utils/config.js')
-const { categoryImage } = require('../../utils/categories.js')
+const { categoryImage, categoryIcons } = require('../../utils/categories.js')
 
 Page({
   data: {
+    statusBarHeight: 20,
     nickName: '', avatarUrl: '', defaultType: 'expense', categoryType: 'expense', categories: [],
     loading: false, loadError: '', saving: false, nameDialog: false, categoryDialog: false,
-    draftName: '', editingCategoryId: null, canChooseAvatar: false
+    draftName: '', editingCategoryId: null, canChooseAvatar: false,
+    draftIcon: 'food', draftIconImage: '/images/餐饮.png', draftImagePath: '',
+    categoryIcons: categoryIcons.map(item => ({ ...item, image: categoryImage(item) }))
   },
   onLoad() {
-    this.setData({ canChooseAvatar: wx.canIUse('button.open-type.chooseAvatar') })
+    this.setData({ statusBarHeight: wx.getWindowInfo().statusBarHeight,
+      canChooseAvatar: wx.canIUse('button.open-type.chooseAvatar') })
     this.loadSettings()
   },
   async loadSettings() {
@@ -29,7 +33,7 @@ Page({
     this.categoryRequestId = requestId
     const result = await request(`/categories?type=${this.data.categoryType}`)
     if (requestId === this.categoryRequestId) {
-      this.setData({ categories: result.items.map(item => ({ ...item, image: categoryImage(item.name) })) })
+      this.setData({ categories: result.items.map(item => ({ ...item, image: categoryImage(item) })) })
     }
   },
   async switchCategory(e) {
@@ -81,7 +85,25 @@ Page({
     } catch (error) { this.showError(error) } finally { this.setData({ saving: false }) }
   },
   addCategory() {
-    if (!this.data.saving) this.setData({ categoryDialog: true, editingCategoryId: null, draftName: '' })
+    if (!this.data.saving) this.setData({ categoryDialog: true, editingCategoryId: null, draftName: '',
+      draftIcon: 'food', draftIconImage: '/images/餐饮.png', draftImagePath: '' })
+  },
+  selectCategoryIcon(e) {
+    if (this.data.saving) return
+    const icon = e.currentTarget.dataset.icon
+    this.setData({ draftIcon: icon, draftIconImage: categoryImage({ icon }), draftImagePath: '' })
+  },
+  chooseCategoryImage() {
+    if (this.data.saving) return
+    wx.chooseImage({
+      count: 1,
+      sizeType: ['compressed'],
+      success: result => {
+        if (this.data.saving || !this.data.categoryDialog) return
+        const path = result.tempFilePaths[0]
+        this.setData({ draftImagePath: path, draftIconImage: path, draftIcon: '' })
+      }
+    })
   },
   editCategory(e) {
     if (this.data.saving) return
@@ -98,7 +120,8 @@ Page({
     this.setData({ saving: true })
     try {
       await request(id ? `/categories/${id}` : '/categories', id ? 'PUT' : 'POST',
-        { name, type: this.data.categoryType })
+        { name, type: this.data.categoryType, icon: id ? undefined : this.data.draftIcon },
+        id ? null : this.data.draftImagePath || null)
       this.setData({ categoryDialog: false })
       await this.loadCategories()
       wx.showToast({ title: '类别已保存' })

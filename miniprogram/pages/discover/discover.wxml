@@ -1,7 +1,8 @@
-<view class="discover-header" style="padding-top: {{statusBarHeight}}px;">
-  <view class="discover-title">发现</view><view class="ledger-caption">{{ledgerName}}</view>
+<view class="page-header" style="padding-top: {{statusBarHeight}}px;">
+  <view class="page-title-row"><view class="page-title">发现</view></view>
+  <view class="page-caption">{{ledgerName}}</view>
 </view>
-<view class="screen-body discover-body">
+<view class="screen-body header-body discover-body">
   <view class="empty-state" wx:if="{{loading}}">正在加载本月数据…</view>
   <view class="empty-state" wx:elif="{{loadError}}" bindtap="loadMonth">{{loadError}} · 点击重试</view>
   <view class="section-card month-card" hidden="{{loading || loadError}}">

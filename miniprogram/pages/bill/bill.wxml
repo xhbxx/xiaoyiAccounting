@@ -14,7 +14,7 @@
   <swiper-item>
     <view class="Totleicon">
       <view class="icon" bindtap="selected" wx:for="{{itemE}}" wx:key="id" data-id="{{item.id}}" data-name="{{item.name}}">
-        <image class="iconImage" src="{{item.image}}"></image>
+        <image class="iconImage" src="{{item.image}}" mode="aspectFit"></image>
         <text class="iconText">{{item.name}}</text>
       </view>
     </view>
@@ -24,7 +24,7 @@
   <swiper-item>
     <view class="Totleicon">
       <view class="icon" bindtap="selected" wx:for="{{itemI}}" wx:key="id" data-id="{{item.id}}" data-name="{{item.name}}">
-        <image class="iconImage {{selectedId==item.id?'selected':''}}" src="{{item.image}}"></image>
+        <image class="iconImage {{selectedId==item.id?'selected':''}}" src="{{item.image}}" mode="aspectFit"></image>
         <text class="iconText">{{item.name}}</text>
       </view>
     </view>

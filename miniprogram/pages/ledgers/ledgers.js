@@ -1,9 +1,12 @@
 const { request } = require('../../utils/config.js')
 
 Page({
-  data: { ledgers: [], currentId: null, loading: false, loadError: '', saving: false,
+  data: { statusBarHeight: 20, ledgers: [], currentId: null, loading: false, loadError: '', saving: false,
     showDialog: false, editingId: null, draftName: '' },
-  onLoad() { this.loadLedgers() },
+  onLoad() {
+    this.setData({ statusBarHeight: wx.getWindowInfo().statusBarHeight })
+    this.loadLedgers()
+  },
   async loadLedgers() {
     this.setData({ loading: true, loadError: '' })
     try {

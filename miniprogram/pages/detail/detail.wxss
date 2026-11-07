@@ -3,7 +3,8 @@
 {
 
   height: 350rpx;
-  background:linear-gradient(to bottom,
+  background-color: #fff;
+  background-image:linear-gradient(to bottom,
   #f4c313fa 0%,#f4c313fa 70%,rgba(255, 183, 77, 0) 100%);
   box-sizing: content-box;
   display:flex;

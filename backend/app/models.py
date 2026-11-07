@@ -1,5 +1,7 @@
-from sqlalchemy import DECIMAL, Column, DateTime, ForeignKey, Integer, String, UniqueConstraint, func
+from sqlalchemy import DECIMAL, Column, DateTime, ForeignKey, Integer, LargeBinary, String, UniqueConstraint, func
 from sqlalchemy.dialects.mysql import INTEGER as MySQLInteger
+from sqlalchemy.dialects.mysql import MEDIUMBLOB
+from sqlalchemy.orm import deferred
 
 from app.db.database import Base
 
@@ -36,6 +38,7 @@ class Category(Base):
     name = Column(String(64), nullable=False)
     type = Column(String(16))
     icon = Column(String(64))
+    icon_data = deferred(Column(LargeBinary().with_variant(MEDIUMBLOB(), 'mysql')))
     sort = Column(Integer)
     created_at = Column(DateTime, server_default=func.now())
     updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
