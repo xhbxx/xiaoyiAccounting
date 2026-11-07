@@ -1,5 +1,4 @@
-const BASE_URL = 'azsworld.top
-
+const BASE_URL = 'https://azsworld.top'
 function send(url, method, data, filePath) {
   const token = wx.getStorageSync('token')
   return new Promise((resolve, reject) => {
